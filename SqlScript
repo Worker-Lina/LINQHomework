@@ -1,0 +1,93 @@
+create database ShopKZ
+
+use ShopKZ
+
+create table Category 
+(
+	Id Uniqueidentifier PRIMARY KEY DEFAULT NEWID(),
+	Name NVARCHAR(MAX) NOT NULL
+)
+
+select * from Manufacturer
+
+insert into Category values
+	(NEWID(), 'Компьютер'),
+	(NEWID(), 'Моноблок'),
+	(NEWID(), 'Ноутбук'),
+	(NEWID(), 'Ультрабук'),
+	(NEWID(), 'Монитор')
+
+create table Manufacturer 
+(
+	Id Uniqueidentifier PRIMARY KEY DEFAULT NEWID(),
+	Name NVARCHAR(MAX) NOT NULL,
+	Country NVARCHAR(MAX) NOT NULL
+)
+
+
+insert into Manufacturer values
+	(NEWID(), 'Acer', 'Тайвань'),
+	(NEWID(), 'Apple', 'США'),
+	(NEWID(), 'Samsung', 'Южная Корея'),
+	(NEWID(), 'Lenovo', 'Китай'),
+	(NEWID(), 'Asus', 'Тайвань')
+
+create table Product 
+(
+	Id Uniqueidentifier PRIMARY KEY DEFAULT NEWID(),
+	Name NVARCHAR(MAX) NOT NULL,
+	Price DECIMAL DEFAULT 0,
+	Publicitydate DATETIME DEFAULT GETDATE(),
+	CategoryId Uniqueidentifier NOT NULL,
+	ManufacturerId Uniqueidentifier NOT NULL,
+
+	CONSTRAINT FK_Product_Category FOREIGN KEY(CategoryId)
+			REFERENCES Category(Id),
+
+	CONSTRAINT FK_Product_Manufacturer FOREIGN KEY(ManufacturerId)
+			REFERENCES Manufacturer(Id)
+)
+
+set dateformat dmy
+
+insert into Product values
+	(NEWID(), 'TUF Gaming F15', 388890, '01/03/2021', '{F32C6D1A-E7C7-40E6-9A3C-B043B3E12866}','{74BA2F3F-3EEC-4FE5-8B14-CFFD61346EB8}')
+
+insert into Product values
+	(NEWID(), 'Legion 5 17ARH05H', 512900, '08/03/2021', '{F32C6D1A-E7C7-40E6-9A3C-B043B3E12866}','{DB5CC1DD-1B21-40CB-986B-9C1BC894B888}')--леново
+
+insert into Product values
+	(NEWID(), 'MacBook Air A2337', 686900, '10/03/2021', '{F32C6D1A-E7C7-40E6-9A3C-B043B3E12866}','{5C16957E-BA86-4B02-AB89-A520323B20A0}') --ноутбук
+
+insert into Product values
+	(NEWID(), 'iMac A1418', 576700, '27/02/2021', '{1FBAF738-0425-4389-81CC-120427020253}','{5C16957E-BA86-4B02-AB89-A520323B20A0}') --моноблок 
+
+insert into Product values
+	(NEWID(), 'WW27', 60900, '01/02/2021', '{08306EFA-823E-47EA-8761-9B1ECBCE2AD6}','{B7250349-BCB8-4592-BC69-FCB004912344}') --асер компьютер
+
+insert into Product values
+	(NEWID(), 'Swift 1 SF114-33-P5XC', 197300, '09/03/2021', '{B86B9544-4615-401E-ABB5-F05E812A1032}','{B7250349-BCB8-4592-BC69-FCB004912344}') --асер ультрабук
+
+insert into Product values
+	(NEWID(), 'S24F356FHI', 51600, '09/01/2021', '{874C48D4-F4CC-410E-A3F7-F9992053E83C}','{EA39EA2D-FDE1-479C-B8BF-52F23380F667}') -- самсунг монитор
+insert into Product values
+	(NEWID(), 'S24F350FHI', 52700, '04/03/2021', '{874C48D4-F4CC-410E-A3F7-F9992053E83C}','{EA39EA2D-FDE1-479C-B8BF-52F23380F667}')-- самсунг монитор
+
+insert into Product values
+	(NEWID(), 'IdeaCentre AIO 3 27IMB05', 242100, '17/02/2021', '{1FBAF738-0425-4389-81CC-120427020253}','{DB5CC1DD-1B21-40CB-986B-9C1BC894B888}') -- моноблок леново
+
+insert into Product values
+	(NEWID(), 'Zenbook UX425JA-BM220T', 379900, '15/02/2021', '{B86B9544-4615-401E-ABB5-F05E812A1032}','{74BA2F3F-3EEC-4FE5-8B14-CFFD61346EB8}') -- ульрабук асус
+
+
+
+
+select * from Manufacturer
+select * from Category
+
+
+
+select p.Name, m.Name as proivoditel, c.Name as category, p.Price, p.Publicitydate  from Product p
+join Category c on c.Id=p.CategoryId
+join Manufacturer m on m.Id=p.ManufacturerId
+order by p.Price
